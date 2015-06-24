@@ -270,10 +270,24 @@ getString NO  "OpenVPN port: " OPENVPNPORT1 31195
 getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
 getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 YES
 getString NO  "Install OpenVPN? " INSTALLOPENVPN1 YES
+getString NO  "Install Bittorent Sync ? " INSTALLBTSYNC YES
 getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 NO
 getString NO  "Install Deluge? " INSTALLDELUGE1 NO
 getString NO  "Wich RTorrent version would you like to install, '0.9.2' or '0.9.3' or '0.9.4'? " RTORRENT1 0.9.4
+
+if [ "$INSTALLBTSYNC" = "YES" ]; then
+	apt-key adv --keyserver keys.gnupg.net --recv-keys 6BF18B15
+	CODENAME=$(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p')
+	echo "" >> /etc/apt/sources.list
+	echo "#### BitTorrent Sync - see: http://forum.bittorrent.com/topic/18974-debian-and-ubuntu-server-packages-for-bittorrent-sync-121-1/" >> /etc/apt/sources.list
+	echo "## Run this command: apt-key adv --keyserver keys.gnupg.net --recv-keys 6BF18B15" >> /etc/apt/sources.list
+	echo "deb http://debian.yeasoft.net/btsync ${CODENAME:-sid} main" >> /etc/apt/sources.list
+	echo "deb-src http://debian.yeasoft.net/btsync ${CODENAME:-sid} main" >> /etc/apt/sources.list
+	unset CODENAME
+	apt-get update
+	apt-get -y install btsync
+fi
 
 if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ] && [ "$RTORRENT1" != "0.9.4" ]; then
   echo "$RTORRENT1 typed is not 0.9.4 or 0.9.3 or 0.9.2!"
@@ -797,9 +811,9 @@ rm hectortheone.rar
 cd quotaspace
 chmod 755 run.sh
 cd ..
-wget --no-check-certificate http://cheapseedboxes.com/limnode.rar
-unrar x limnode.rar
-rm limnode.rar
+wget --no-check-certificate http://cheapseedboxes.com/upload_check.rar
+unrar x upload_check.rar
+rm upload_check.rar
 cd ..
 chown -R www-data:www-data /var/www/rutorrent
 set +x verbose
