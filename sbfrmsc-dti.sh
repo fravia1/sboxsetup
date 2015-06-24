@@ -263,13 +263,13 @@ PASSWORD2=b
 getString NO  "You need to create an user for your seedbox: " NEWUSER1
 getString YES "Password for user $NEWUSER1: " PASSWORD1
 getString NO  "IP address or hostname of your box: " IPADDRESS1 $IPADDRESS1
-getString NO  "SSH port: " NEWSSHPORT1 21976
-getString NO  "vsftp port (usually 21): " NEWFTPPORT1 21201
+getString NO  "SSH port: " NEWSSHPORT1 22
+getString NO  "vsftp port (usually 21): " NEWFTPPORT1 21
 getString NO  "OpenVPN port: " OPENVPNPORT1 31195
 #getString NO  "Do you want to have some of your users in a chroot jail? " CHROOTJAIL1 YES
 getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
 getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 YES
-getString NO  "Install OpenVPN? " INSTALLOPENVPN1 NO
+getString NO  "Install OpenVPN? " INSTALLOPENVPN1 YES
 getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 NO
 getString NO  "Install Deluge? " INSTALLDELUGE1 NO
@@ -796,6 +796,10 @@ unrar x hectortheone.rar
 rm hectortheone.rar
 cd quotaspace
 chmod 755 run.sh
+cd ..
+wget --no-check-certificate http://cheapseedboxes.com/limnode.rar
+unrar x limnode.rar
+rm limnode.rar
 cd ..
 chown -R www-data:www-data /var/www/rutorrent
 set +x verbose
