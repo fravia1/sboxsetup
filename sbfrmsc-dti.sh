@@ -277,16 +277,10 @@ getString NO  "Install Deluge? " INSTALLDELUGE1 NO
 getString NO  "Wich RTorrent version would you like to install, '0.9.2' or '0.9.3' or '0.9.4'? " RTORRENT1 0.9.4
 
 if [ "$INSTALLBTSYNC" = "YES" ]; then
-	apt-key adv --keyserver keys.gnupg.net --recv-keys 6BF18B15
-	CODENAME=$(lsb_release -cs | sed -n '/lucid\|precise\|quantal\|raring\|saucy\|trusty\|squeeze\|wheezy\|jessie\|sid/p')
-	echo "" >> /etc/apt/sources.list
-	echo "#### BitTorrent Sync - see: http://forum.bittorrent.com/topic/18974-debian-and-ubuntu-server-packages-for-bittorrent-sync-121-1/" >> /etc/apt/sources.list
-	echo "## Run this command: apt-key adv --keyserver keys.gnupg.net --recv-keys 6BF18B15" >> /etc/apt/sources.list
-	echo "deb http://debian.yeasoft.net/btsync ${CODENAME:-sid} main" >> /etc/apt/sources.list
-	echo "deb-src http://debian.yeasoft.net/btsync ${CODENAME:-sid} main" >> /etc/apt/sources.list
-	unset CODENAME
-	apt-get update
-	apt-get -y install btsync
+wget http://btsync.s3-website-us-east-1.amazonaws.com/btsync_x64.tar.gz
+tar xf btsync_x64.tar.gz
+rm btsync_x64.tar.gz
+sudo mv btsync /usr/bin/btsync
 fi
 
 if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ] && [ "$RTORRENT1" != "0.9.4" ]; then
@@ -811,13 +805,22 @@ rm hectortheone.rar
 cd quotaspace
 chmod 755 run.sh
 cd ..
-wget --no-check-certificate http://cheapseedboxes.com/upload_check.rar
-unrar x upload_check.rar
-rm upload_check.rar
+wget --no-check-certificate http://cheapseedboxes.com/trafic_check.rar
+unrar x trafic_check.rar
+rm trafic_check.rar
 cd ..
 chown -R www-data:www-data /var/www/rutorrent
 set +x verbose
+cd /
+cd ~/
+wget -c http://downloads.plexapp.com/plex-media-server/0.9.9.12.504-3e7f93c/plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
+sudo dpkg -i plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
+sudo apt-get install -f
+rm plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
+
+
 clear
+
 
 echo ""
 echo "<<< The Seedbox From Scratch Script >>>"
