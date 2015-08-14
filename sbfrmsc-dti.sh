@@ -817,7 +817,28 @@ wget -c http://downloads.plexapp.com/plex-media-server/0.9.9.12.504-3e7f93c/plex
 sudo dpkg -i plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
 sudo apt-get install -f
 rm plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
+# Bitsync
 
+BitorrentSyncUser=$NEWUSER1
+IPADDRESS1=`ifconfig | sed -n 's/.*inet addr:\([0-9.]\+\)\s.*/\1/p' | grep -v 127 | head -n 1`
+sudo apt-get --yes update
+sudo apt-get --yes install python-software-properties
+sudo add-apt-repository --yes ppa:tuxpoldo/btsync
+sudo apt-get --yes update
+sudo chown -R $BitorrentSyncUser:$BitorrentSyncUser /home/$BitorrentSyncUser/btsync
+sudo chmod -R 755 /home/$BitorrentSyncUser/btsync
+sudo mkdir -p /home/$BitorrentSyncUser/btsync
+sudo wget --no-check-certificate https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz
+sudo tar xvfz BitTorrent-Sync_x64.tar.gz -C /home/$BitorrentSyncUser/btsync
+sudo su --login --command "/home/$BitorrentSyncUser/btsync/btsync --webui.listen 0.0.0.0:8888" $BitorrentSyncUser
+
+
+##apt-get --yes install btsync
+##dpkg-reconfigure btsync
+echo "YES" | sudo tee /etc/hostdz/bittorrentsync.info
+
+echo
+echo -e "${bldgrn}BitTorrent-Sync installed! ${bldylw}Web: https://$IPADDRESS1:8888/gui/${txtrst}"
 
 clear
 
