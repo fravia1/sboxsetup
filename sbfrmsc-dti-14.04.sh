@@ -789,6 +789,83 @@ sudo wget -N https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Syn
 sudo tar xvfz BitTorrent-Sync_x64.tar.gz -C /home/$BitorrentSyncUser/btsync
 sudo su --login --command "/home/$BitorrentSyncUser/btsync/btsync --webui.listen 0.0.0.0:8888" $BitorrentSyncUser
 
+#101. Subsonic
+SubsonicUser=$NEWUSER1
+IPADDRESS1=`ifconfig | sed -n 's/.*inet addr:\([0-9.]\+\)\s.*/\1/p' | grep -v 127 | head -n 1`
+
+ if [ ! $SubsonicUser ]; then
+    echo -n "Username: "
+      read SubsonicUser
+    fi
+ if [ ! $SubsonicUser ]; then
+     echo "Error no Username!"
+       exit 0
+    fi
+
+sudo apt-get --yes install openjdk-7-jre
+sudo wget -N http://cznic.dl.sourceforge.net/project/subsonic/subsonic/5.2.1/subsonic-5.2.1.deb
+sudo dpkg -i subsonic-5.2.1.deb
+sudo chmod -R 755 /etc/default/subsonic
+sudo perl -pi -e "s/SUBSONIC_USER=root/SUBSONIC_USER=$SubsonicUser/g" /etc/default/subsonic
+sudo service subsonic restart
+echo "YES" | sudo tee /etc/hostdz/subsonic.info
+
+echo
+echo -e "${bldgrn}Subsonic installed! ${bldylw}Web: http://$IPADDRESS1:4040${txtrst}"
+echo -e "${bldgrn}Username: ${bldylw}admin${txtrst}"
+echo -e "${bldgrn}Password: ${bldylw}admin${txtrst}"
+echo
+
+#102. 
+NZBGetUser=$NEWUSER1
+IPADDRESS1=`ifconfig | sed -n 's/.*inet addr:\([0-9.]\+\)\s.*/\1/p' | grep -v 127 | head -n 1`
+
+ if [ ! $NZBGetUser ]; then
+    echo -n "Username: "
+      read NZBGetUser
+    fi
+ if [ ! $NZBGetUser ]; then
+     echo "Error no Username!"
+       exit 0
+    fi
+
+sudo add-apt-repository --yes ppa:modriscoll/nzbget
+sudo apt-get --yes update
+sudo apt-get --yes install unrar
+sudo apt-get --yes install libncurses5-dev libsigc++-dev sigc++ libpar2-0-dev libssl-dev libgnutls-dev libxml2-dev build-essential unrar unzip p7zip-full
+
+
+wget http://sourceforge.net/projects/nzbget/files/nzbget-12.0.tar.gz
+tar -xvf nzbget-12.0.tar.gz && cd nzbget-12.0
+wget http://sourceforge.net/projects/parchive/files/libpar2/0.2/libpar2-0.2.tar.gz
+tar -xvf libpar2-0.2.tar.gz && cd libpar2-0.2 && cp ../libpar2-0.2-*.patch .
+patch < libpar2-0.2-bugfixes.patch
+patch < libpar2-0.2-cancel.patch
+./configure
+make
+sudo make install
+cd ..
+./configure
+make
+sudo make install
+sudo make install-conf
+mv ppscripts ~/downloads/
+wget http://sourceforge.net/projects/nzbget/files/ppscripts/videosort/videosort-ppscript-4.0.zip
+unzip videosort-ppscript-4.0.zip -d ~/downloads/ppscripts/
+nzbget -D
+
+
+
+
+
+
+
+echo
+echo "${bldgrn}NZBGet installed! ${bldylw}Web: http://$IPADDRESS1:6789${txtrst}"
+echo "${bldgrn}Username: ${bldylw}nzbget${txtrst}"
+echo "${bldgrn}Password: ${bldylw}$PASSWORD1{txtrst}"
+echo
+
 
 ##apt-get --yes install btsync
 ##dpkg-reconfigure btsync
