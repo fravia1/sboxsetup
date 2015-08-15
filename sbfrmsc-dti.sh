@@ -774,19 +774,7 @@ sudo wget http://kriskras.info/downloads/csickrage -P /etc/default/
 sudo update-rc.d sickrage defaults
 sudo service sickrage start
 
-#Btsync
-BitorrentSyncUser=$NEWUSER1
-IPADDRESS1=`ifconfig | sed -n 's/.*inet addr:\([0-9.]\+\)\s.*/\1/p' | grep -v 127 | head -n 1`
-sudo apt-get --yes update
-sudo apt-get --yes install python-software-properties
-sudo add-apt-repository --yes ppa:tuxpoldo/btsync
-sudo apt-get --yes update
-sudo chown -R $BitorrentSyncUser:$BitorrentSyncUser /home/$BitorrentSyncUser/btsync
-sudo chmod -R 755 /home/$BitorrentSyncUser/btsync
-sudo mkdir -p /home/$BitorrentSyncUser/btsync
-sudo wget --no-check-certificate https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz
-sudo tar xvfz BitTorrent-Sync_x64.tar.gz -C /home/$BitorrentSyncUser/btsync
-sudo su --login --command "/home/$BitorrentSyncUser/btsync/btsync --webui.listen 0.0.0.0:8888" $BitorrentSyncUser
+
 
 # 98. Cosmetic corrections & installing plowshare
 #cd /var/www/rutorrent/plugins/autodl-irssi
