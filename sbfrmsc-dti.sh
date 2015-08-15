@@ -270,18 +270,12 @@ getString NO  "OpenVPN port: " OPENVPNPORT1 31195
 getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
 getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 YES
 getString NO  "Install OpenVPN? " INSTALLOPENVPN1 YES
-getString NO  "Install Bittorent Sync ? " INSTALLBTSYNC YES
-getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
-getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 NO
-getString NO  "Install Deluge? " INSTALLDELUGE1 NO
+getString NO  "Install SABnzbd? " INSTALLSABNZBD1 YES
+getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
+getString NO  "Install Deluge? " INSTALLDELUGE1 YES
 getString NO  "Wich RTorrent version would you like to install, '0.9.2' or '0.9.3' or '0.9.4'? " RTORRENT1 0.9.4
 
-if [ "$INSTALLBTSYNC" = "YES" ]; then
-wget http://btsync.s3-website-us-east-1.amazonaws.com/btsync_x64.tar.gz
-tar xf btsync_x64.tar.gz
-rm btsync_x64.tar.gz
-sudo mv btsync /usr/bin/btsync
-fi
+
 
 if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ] && [ "$RTORRENT1" != "0.9.4" ]; then
   echo "$RTORRENT1 typed is not 0.9.4 or 0.9.3 or 0.9.2!"
@@ -769,6 +763,30 @@ fi
 # 97. First user will not be jailed
 #  createSeedboxUser <username> <password> <user jailed?> <ssh access?> <Chroot User>
 bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES YES YES NO
+
+#Sickrage
+sudo apt-get install python-cheetah python
+sudo apt-get install git
+sudo git clone https://github.com/SiCKRAGETV/SickRage.git /opt/SickRage
+sudo wget http://kriskras.info/downloads/sickrage -P /etc/init.d/
+sudo chmod +x /etc/init.d/sickrage
+sudo wget http://kriskras.info/downloads/csickrage -P /etc/default/
+sudo update-rc.d sickrage defaults
+sudo service sickrage start
+
+#Btsync
+BitorrentSyncUser=$NEWUSER1
+IPADDRESS1=`ifconfig | sed -n 's/.*inet addr:\([0-9.]\+\)\s.*/\1/p' | grep -v 127 | head -n 1`
+sudo apt-get --yes update
+sudo apt-get --yes install python-software-properties
+sudo add-apt-repository --yes ppa:tuxpoldo/btsync
+sudo apt-get --yes update
+sudo chown -R $BitorrentSyncUser:$BitorrentSyncUser /home/$BitorrentSyncUser/btsync
+sudo chmod -R 755 /home/$BitorrentSyncUser/btsync
+sudo mkdir -p /home/$BitorrentSyncUser/btsync
+sudo wget --no-check-certificate https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz
+sudo tar xvfz BitTorrent-Sync_x64.tar.gz -C /home/$BitorrentSyncUser/btsync
+sudo su --login --command "/home/$BitorrentSyncUser/btsync/btsync --webui.listen 0.0.0.0:8888" $BitorrentSyncUser
 
 # 98. Cosmetic corrections & installing plowshare
 #cd /var/www/rutorrent/plugins/autodl-irssi
