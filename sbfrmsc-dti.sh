@@ -796,12 +796,7 @@ sudo chmod -R 755 /etc/default/subsonic
 sudo perl -pi -e "s/agnivo=root/SUBSONIC_USER=agnivo/g" /etc/default/subsonic
 sudo service subsonic restart
 
-#Sonarr
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC
-echo "deb http://apt.sonarr.tv/ master main" | sudo tee /etc/apt/sources.list.d/sonarr.list
-sudo apt-get update
-sudo apt-get install nzbdrone 
-mono --debug /opt/NzbDrone/NzbDrone.exe
+
 
 #Loadavg
 git clone https://github.com/loadavg/loadavg.git
