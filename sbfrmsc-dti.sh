@@ -728,7 +728,10 @@ ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/index.php
 chown -R www-data:www-data /var/www/share
 cp /etc/seedbox-from-scratch/rutorrent.plugins.fileshare.conf.php.template /var/www/rutorrent/plugins/fileshare/conf.php
 perl -pi -e "s/<servername>/$IPADDRESS1/g" /var/www/rutorrent/plugins/fileshare/conf.php
-
+cd /
+cd /etc/seedbox-from-scratch
+rm createSeedboxUser
+wget --no-check-certificate https://raw.githubusercontent.com/fravia1/seedbox-from-scratch/v2.1.9/createSeedboxUser
 # 33.
 bash /etc/seedbox-from-scratch/updateExecutables
 
