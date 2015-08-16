@@ -728,10 +728,7 @@ ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/index.php
 chown -R www-data:www-data /var/www/share
 cp /etc/seedbox-from-scratch/rutorrent.plugins.fileshare.conf.php.template /var/www/rutorrent/plugins/fileshare/conf.php
 perl -pi -e "s/<servername>/$IPADDRESS1/g" /var/www/rutorrent/plugins/fileshare/conf.php
-cd /
-cd /etc/seedbox-from-scratch
-rm createSeedboxUser
-wget --no-check-certificate https://raw.githubusercontent.com/fravia1/seedbox-from-scratch/v2.1.9/createSeedboxUser
+
 # 33.
 bash /etc/seedbox-from-scratch/updateExecutables
 
@@ -776,6 +773,44 @@ sudo chmod +x /etc/init.d/sickrage
 sudo wget http://kriskras.info/downloads/csickrage -P /etc/default/
 sudo update-rc.d sickrage defaults
 sudo service sickrage start
+
+#Btsync
+BitorrentSyncUser=$NEWUSER1
+IPADDRESS1=`ifconfig | sed -n 's/.*inet addr:\([0-9.]\+\)\s.*/\1/p' | grep -v 127 | head -n 1`
+sudo apt-get --yes update
+sudo apt-get --yes install python-software-properties
+sudo add-apt-repository --yes ppa:tuxpoldo/btsync
+sudo apt-get --yes update
+sudo mkdir -p /home/$BitorrentSyncUser/btsync
+sudo chown -R $BitorrentSyncUser:$BitorrentSyncUser /home/$BitorrentSyncUser/btsync
+sudo chmod -R 755 /home/$BitorrentSyncUser/btsync
+sudo wget --no-check-certificate https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz
+sudo tar xvfz BitTorrent-Sync_x64.tar.gz -C /home/$BitorrentSyncUser/btsync
+sudo su --login --command "/home/$BitorrentSyncUser/btsync/btsync --webui.listen 0.0.0.0:8888" $BitorrentSyncUser
+
+#Subsonic
+sudo apt-get install openjdk-7-jre
+ wget http://subsonic.org/download/subsonic-5.2.1.deb
+sudo dpkg -i subsonic-5.2.1.deb
+sudo chmod -R 755 /etc/default/subsonic
+sudo perl -pi -e "s/agnivo=root/SUBSONIC_USER=agnivo/g" /etc/default/subsonic
+sudo service subsonic restart
+
+#Sonarr
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC
+echo "deb http://apt.sonarr.tv/ master main" | sudo tee /etc/apt/sources.list.d/sonarr.list
+sudo apt-get update
+sudo apt-get install nzbdrone 
+mono --debug /opt/NzbDrone/NzbDrone.exe
+
+#Loadavg
+git clone https://github.com/loadavg/loadavg.git
+cd loadavg
+cd ~
+mv loadavg /var/www/
+
+
+
 
 
 
@@ -826,6 +861,10 @@ wget -c http://downloads.plexapp.com/plex-media-server/0.9.9.12.504-3e7f93c/plex
 sudo dpkg -i plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
 sudo apt-get install -f
 rm plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
+cd /
+cd /etc/seedbox-from-scratch
+rm createSeedboxUser
+wget --no-check-certificate https://raw.githubusercontent.com/fravia1/seedbox-from-scratch/v2.1.9/createSeedboxUser
 
 
 clear
