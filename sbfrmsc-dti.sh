@@ -856,10 +856,6 @@ wget -c http://downloads.plexapp.com/plex-media-server/0.9.9.12.504-3e7f93c/plex
 sudo dpkg -i plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
 sudo apt-get install -f
 rm plexmediaserver_0.9.9.12.504-3e7f93c_amd64.deb
-cd /
-cd /etc/seedbox-from-scratch
-rm createSeedboxUser
-wget --no-check-certificate https://raw.githubusercontent.com/fravia1/seedbox-from-scratch/v2.1.9/createSeedboxUser
 
 
 clear
