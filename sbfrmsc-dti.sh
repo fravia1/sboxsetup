@@ -791,7 +791,69 @@ cd loadavg
 cd ~
 mv loadavg /var/www/
 
+#CouchPotato
+echo '--->Checking for previous versions of CouchPotato...'
+sleep 2
+cd /
+mkdir /home/$NEWUSER1/.pid/couchpotato.pid
+mkdir /home/$NEWUSER1/.couchpotato_`date
+mkdir /home/$NEWUSER1/.couchpotato
+sudo /etc/init.d/couchpotato* stop >/dev/null 2>&1
+sudo killall couchpotato* >/dev/null 2>&1
+echo '--->Any running CouchPotato processes killed'
+sudo update-rc.d -f couchpotato remove >/dev/null 2>&1
+sudo rm /etc/init.d/couchpotato >/dev/null 2>&1
+sudo rm /etc/default/couchpotato >/dev/null 2>&1
+echo '--->Existing CouchPotato init scripts removed'
+sudo update-rc.d -f couchpotato remove >/dev/null 2>&1
+mv /home/$NEWUSER1/.couchpotato /home/$NEWUSER1/.couchpotato_`date '+%m-%d-%Y_%H-%M'` >/dev/null 2>&1
+echo '--->Any existing CouchPotato files were moved to /home/'$NEWUSER1'/.couchpotato_'`date '+%m-%d-%Y_%H-%M'`
+echo
 
+echo '--->Downloading latest CouchPotato...'
+sleep 2
+cd /home/$NEWUSER1
+git clone git://github.com/RuudBurger/CouchPotatoServer.git .couchpotato
+chmod 775 -R /home/$NEWUSER1/.couchpotato >/dev/null 2>&1
+sudo chown $NEWUSER1: /home/$NEWUSER1/.couchpotato >/dev/null 2>&1
+echo
+
+echo '--->Creating new default and init scripts...'
+sleep 2
+cd /home/$NEWUSER1/.couchpotato/init
+echo
+
+echo "# COPY THIS FILE TO /etc/default/couchpotato" >> couchpotato
+echo "# OPTIONS: CP_HOME, CP_USER, CP_DATA, CP_PIDFILE, PYTHON_BIN, CP_OPTS, SSD_OPTS" >> couchpotato
+echo '--->Replacing CouchPotato APP_PATH and DATA_DIR...'
+sleep 1
+echo "CP_HOME=/home/"$NEWUSER1"/.couchpotato/" >> couchpotato
+echo "CP_DATA=/home/"$NEWUSER1"/.config/couchpotato" >> couchpotato
+echo '--->Enabling current user ('$NEWUSER1') to run CouchPotato...'
+echo "CP_USER="$NEWUSER1 >> couchpotato
+###EDIT
+echo "CP_PIDFILE=/home/"$NEWUSER1"/.pid/couchpotato.pid" >> couchpotato
+sudo mv couchpotato /etc/default/
+sudo chmod +x /etc/default/couchpotato
+
+echo
+echo '--->Copying init script...'
+sleep 1
+sudo cp ubuntu /etc/init.d/couchpotato
+sudo chown $NEWUSER1: /etc/init.d/couchpotato
+sudo chmod +x /etc/init.d/couchpotato
+
+echo '--->Updating rc.d to start CouchPotato at boot time...'
+sudo update-rc.d couchpotato defaults
+echo
+echo '--->All done.'
+echo 'CouchPotato should start within 10-20 seconds and your browser should open.'
+echo 'If not you can start it using "sudo /etc/init.d/couchpotato start" command.'
+echo 'Then open http://localhost:5050 in your browser.'
+echo
+echo '***If this script worked for you, please visit http://www.htpcBeginner.com and like/follow us.'
+echo 'Thank you for using the CouchPotato installer script from www.htpcBeginner.com.***'
+echo
 
 
 
