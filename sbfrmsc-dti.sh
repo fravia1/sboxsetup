@@ -777,7 +777,7 @@ sudo service sickrage start
 
 #Subsonic
 sudo apt-get install openjdk-7-jre
- wget http://subsonic.org/download/subsonic-5.2.1.deb
+wget http://subsonic.org/download/subsonic-5.2.1.deb
 sudo dpkg -i subsonic-5.2.1.deb
 sudo chmod -R 755 /etc/default/subsonic
 sudo perl -pi -e "s/$NEWUSER1o=root/SUBSONIC_USER=$NEWUSER1/g" /etc/default/subsonic
