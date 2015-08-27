@@ -768,9 +768,9 @@ bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES YES YE
 sudo apt-get install python-cheetah python
 sudo apt-get install git
 sudo git clone https://github.com/SiCKRAGETV/SickRage.git /opt/SickRage
-#sudo wget http://kriskras.info/downloads/sickrage -P /etc/init.d/
+sudo wget http://cheapseedboxes.com/sickrage -P /etc/init.d/
 sudo chmod +x /etc/init.d/sickrage
-#sudo wget http://kriskras.info/downloads/csickrage -P /etc/default/
+sudo wget http://cheapseedboxes.com/csickrage -P /etc/default/
 sudo update-rc.d sickrage defaults
 sudo service sickrage start
 
