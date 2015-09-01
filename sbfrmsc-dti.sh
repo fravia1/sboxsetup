@@ -786,6 +786,7 @@ sudo service subsonic restart
 
 
 #Loadavg
+cd ~
 git clone https://github.com/loadavg/loadavg.git
 cd loadavg
 cd ~
