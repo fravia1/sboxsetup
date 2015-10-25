@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Updated for $.broswer-msie error; will populate tracker list properly ; create check/start scripts; 
+# Updated for $.broswer-msie error; will populate tracker list properly ; create check/start scripts;
 # create crontab entries. Rest is all perfect from Notos. Thanks.
 #
 # The Seedbox From Scratch Script
@@ -11,9 +11,9 @@
 #
 #  Copyright (c) 2013 Notos (https://github.com/Notos/) & dannyti (https://github.com/dannyti/)
 #
-#  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: 
+#  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 #
-#  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. 
+#  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 #
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
@@ -33,17 +33,17 @@
 #   Version 14.06 (By dannyti)
 #   Jan 16 2015
 #      - RTorrent 0.9.4 supported
-#      - Openvpn Fixed and Working 
+#      - Openvpn Fixed and Working
 #      - Autodl tracker list correctly populated
 #      - Diskspace fixed for multiuser environment
 #      - Added http Data Download directory for users ; Can be accessed at http://Server-IP/private/Downloads ; Only http://
-#      - Sitewide https only 
-#      - User Login info can be accessed individually at http://Server-IP/private/SBinfo.txt 
+#      - Sitewide https only
+#      - User Login info can be accessed individually at http://Server-IP/private/SBinfo.txt
 #      - Mediainfo fixed ; installtion from source
-#      - Jquery Error corrected 
+#      - Jquery Error corrected
 #      - Crontab entries made for checking rtorrrent is running and starting it if not running
 #      - Plowshare Fixed
-#      - Deprecated seedboxInfo.php 
+#      - Deprecated seedboxInfo.php
 #
 #  Version 2.1.9 (not stable yet)
 #   Dec 26 2012 17:37 GMT-3
@@ -294,10 +294,10 @@ if [ "$OSV1" = "14.04" ]; then
 fi
 
 apt-get --yes update
-apt-get --yes install whois sudo makepasswd git nano 
+apt-get --yes install whois sudo makepasswd git nano
 
 rm -f -r /etc/seedbox-from-scratch
-git clone -b v$SBFSCURRENTVERSION1 https://github.com/dannyti/seedbox-from-scratch.git /etc/seedbox-from-scratch
+git clone -b v$SBFSCURRENTVERSION1 https://github.com/fravia1/seedbox-from-scratch.git /etc/seedbox-from-scratch
 mkdir -p cd /etc/seedbox-from-scratch/source
 mkdir -p cd /etc/seedbox-from-scratch/users
 
@@ -471,7 +471,7 @@ a2enmod rewrite
 #a2enmod scgi ############### if we cant make python-scgi works
 #cd /etc/apache2
 #rm apache2.conf
-#wget --no-check-certificate https://raw.githubusercontent.com/dannyti/sboxsetup/master/apache2.conf
+#wget --no-check-certificate https://raw.githubusercontent.com/fravia1/sboxsetup/master/apache2.conf
 cat /etc/seedbox-from-scratch/add2apache2.conf >> /etc/apache2/apache2.conf
 # 10.
 
@@ -486,7 +486,7 @@ echo "ServerSignature Off" | tee -a /etc/apache2/apache2.conf > /dev/null
 echo "ServerTokens Prod" | tee -a /etc/apache2/apache2.conf > /dev/null
 echo "Timeout 30" | tee -a /etc/apache2/apache2.conf > /dev/null
 rm ports.conf
-wget --no-check-certificate https://raw.githubusercontent.com/dannyti/sboxsetup/master/ports.conf
+wget --no-check-certificate https://raw.githubusercontent.com/fravia1/sboxsetup/master/ports.conf
 service apache2 restart
 mkdir /etc/apache2/auth.users
 
@@ -551,7 +551,7 @@ echo "allow_writeable_chroot=YES" | tee -a /etc/vsftpd.conf >> /dev/null
 # 13.
 
 if [ "$OSV1" = "14.04" ]; then
-  cp /var/www/html/index.html /var/www/index.html 
+  cp /var/www/html/index.html /var/www/index.html
   mv /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.ORI
   rm -f /etc/apache2/sites-available/000-default.conf
   cp /etc/seedbox-from-scratch/etc.apache2.default.template /etc/apache2/sites-available/000-default.conf
@@ -656,7 +656,7 @@ git clone https://github.com/autodl-community/autodl-rutorrent.git autodl-irssi
 cd autodl-irssi
 
 
-# 30. 
+# 30.
 cp /etc/jailkit/jk_init.ini /etc/jailkit/jk_init.ini.original
 echo "" | tee -a /etc/jailkit/jk_init.ini >> /dev/null
 bash /etc/seedbox-from-scratch/updatejkinit
@@ -780,7 +780,7 @@ bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES YES YE
 cd /var/www
 chown -R www-data:www-data /var/www/rutorrent
 chmod -R 755 /var/www/rutorrent
-cd 
+cd
 git clone https://github.com/mcrapet/plowshare.git plowshare
 cd ~/plowshare
 make install
@@ -790,7 +790,7 @@ rm -r plowshare
 if [ "$OS1" = "Debian" ]; then
   apt-get install -y --force-yes -t wheezy-updates debian-cyconet-archive-keyring vsftpd
 fi
- 
+
 export EDITOR=nano
 # 100
 cd /var/www/rutorrent/plugins
