@@ -263,8 +263,8 @@ PASSWORD2=b
 getString NO  "You need to create an user for your seedbox: " NEWUSER1
 getString YES "Password for user $NEWUSER1: " PASSWORD1
 getString NO  "IP address or hostname of your box: " IPADDRESS1 $IPADDRESS1
-getString NO  "SSH port: " NEWSSHPORT1 21
-getString NO  "vsftp port (usually 21): " NEWFTPPORT1 22
+getString NO  "SSH port: " NEWSSHPORT1 22
+getString NO  "vsftp port (usually 21): " NEWFTPPORT1 21
 getString NO  "OpenVPN port: " OPENVPNPORT1 31195
 #getString NO  "Do you want to have some of your users in a chroot jail? " CHROOTJAIL1 YES
 getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
