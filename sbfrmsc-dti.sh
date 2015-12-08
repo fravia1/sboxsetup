@@ -290,6 +290,7 @@ apt-get --yes install whois sudo makepasswd git nano
 
 rm -f -r /etc/seedbox-from-scratch
 git clone -b v$SBFSCURRENTVERSION1 https://github.com/dannyti/seedbox-from-scratch.git /etc/seedbox-from-scratch
+bash -c 'cd /etc/seedbox-from-scratch && git checkout 72c60d29730c31bec795ea63f7e5b88556ad2efd'
 mkdir -p cd /etc/seedbox-from-scratch/source
 mkdir -p cd /etc/seedbox-from-scratch/users
 
